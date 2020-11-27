@@ -12,3 +12,28 @@ hr{
 .delete-form{
 	display:inline;
 }
+
+#leftButton a{
+    margin-bottom: 5%;
+}
+#leftButton .selection {
+   color: white;
+    text-decoration: none;
+}
+
+
+.trademark{
+        text-align: center;
+        background-color:#e9ecef;
+        padding: 3%;
+    margin-top: 5%;
+    color: black;
+    font-weight: 300;
+    font-size: larger;
+    letter-spacing: 3px;
+}
+
+#leftButton :hover{
+    background-color: #1E90FF;
+    
+}

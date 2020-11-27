@@ -22,7 +22,8 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 	var nDesciption = request.body.mDescription;
 	var nAuthor ={
 		id: request.user._id,
-		username : request.user.username
+		username : request.user.username,
+		role:request.user.role
 	};
 	var nMlist = {
 		title:nMovie,
@@ -42,6 +43,16 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 // New Page
 router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 	respond.render("movies/new",{ currentUser:request.user});
+});
+
+router.get("/register",middleware.isLoggedIn,(request,respond)=>{
+	respond.render("movies/jobregister",{ currentUser:request.user});
+});
+router.post("/register",middleware.isLoggedIn,(request,respond)=>{
+
+	 console.log("posted");
+	 respond.redirect("/movies");
+
 });
 
 // Show Page
@@ -86,7 +97,6 @@ router.delete("/:id",middleware.checkMovieOwnership,(request,respond)=>{
 	});
 	// respond.send("you are trying to delete");
 });
-
 
 
 module.exports = router;

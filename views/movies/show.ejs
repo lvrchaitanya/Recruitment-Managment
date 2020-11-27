@@ -3,16 +3,17 @@
 	<div class="container">
 		<div class="row mt-5">
 			<div class="col-md-3">
-				<p class="lead">Movies</p>
-				<ul class="list-group">
-  					<li class="list-group-item active">Cras justo odio</li>
-  					<li class="list-group-item">Dapibus ac facilisis in</li>
-  					<li class="list-group-item">Morbi leo risus</li>
+				<p class="lead">OPTIONS</p>
+				<ul id="leftButton" class="list-group">
+					More Info</a>
+					<a class= "selection" href="/movies/<%=movie._id%>" ><li class="list-group-item active">Rectuitment details</li></a>
+  					<a class= "selection" href="/movies/register" ><li class="list-group-item active">Register </li></a>
+  					<li class="list-group-item active">Contact Rectuiter</li>
 				</ul>
 			</div>
 			<div class="col-md-9">
 				<div class="card">
-					<img src="<%=movie.url%>" class="card-img-top" >
+					<!-- <img src="<%=movie.url%>" class="card-img-top" > -->
   					<div class="card-body">
 						<h3 class="card-title"><%=movie.title%></h3>
 						<p class="card-text"><%=movie.author.username%></p>

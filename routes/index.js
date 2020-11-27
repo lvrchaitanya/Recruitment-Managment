@@ -15,12 +15,19 @@ router.get("/",function(request,respond){
 //Register Form
 router.get("/register",(request,respond)=>{
 	console.log("Registraion");
+	console.log(request.user);
 	respond.render("register",{currentUser:request.user});
 });
 
 //Sign Up Logic
 router.post("/register",(request,respond)=>{
-	var newUser = new User({username:request.body.username});
+	var newUser;
+	if(request.body.Role)
+	{
+		 newUser = new User({username:request.body.username,role:"recruiter"});
+	}
+	else
+	newUser = new User({username:request.body.username,role:"student"});
 	User.register(newUser,request.body.password,(err,createdUser)=>{
 		if(err){
 			console.log(err);
