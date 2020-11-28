@@ -47,6 +47,7 @@ router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 
 router.get("/register",middleware.isLoggedIn,(request,respond)=>{
 	respond.render("movies/jobregister",{ currentUser:request.user});
+	
 });
 router.post("/register",middleware.isLoggedIn,(request,respond)=>{
 

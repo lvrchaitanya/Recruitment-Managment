@@ -20,6 +20,12 @@ const DB_URL=process.env.DB_URL || "mongodb://test123:test123@cluster0-shard-00-
 const PORT = process.env.PORT ||3000;
 // const IP = process.env.IP || "127.0.0.1"
 
+
+const mysql = require('mysql2');
+const { db } = require('./models/movies.js');
+ 
+// create the connection to database
+
 apk.set("view engine", "ejs");
 apk.use(bodyParser.urlencoded({extended: true}));
 apk.use(express.static(__dirname+"/public"));
@@ -65,3 +71,23 @@ apk.get("*",(request,respond)=>{
 apk.listen(PORT,()=>{
 	console.log(process.env.PORT,process.env.IP);
 });
+
+module.exports= ()=>{
+  var conn= mysql.createConnection({
+	host: 'localhost',
+  user: 'root',
+  password: 'root@3CR',
+  database: 'testing',
+	
+  });
+
+  conn.connect((err)=>{
+	if(err)
+	console.log('its error '+ err);
+	else
+	console.log("connected...");
+
+  });
+}
+
+
