@@ -7,28 +7,11 @@ var express = require("express"),
 	Comment	= require("../models/comment");
 	const mysql = require('mysql2');
 	middleware=require("../middleware");
+	const conn = require('../dbConfig');
 	
-	var conn;
 //Root Route
 router.get("/",function(request,respond){
-	// respond.render("Space")
 	
-		 conn= mysql.createConnection({
-		  host: 'localhost',
-		user: 'root',
-		password: 'root@3CR',
-		database: 'RMS',
-		  
-		});
-	  
-		conn.connect((err)=>{
-		  if(err)
-		  console.log('its error '+ err);
-		  else
-		  console.log("connected...");
-	  
-		});
-	  
 	respond.render("landing");
 });
 
@@ -128,6 +111,61 @@ router.get("/logout",(request,respond)=>{
 router.get("/result",(request,respond)=>{
 	request.logout();
 	respond.render("results");
+});
+
+//MyAcc
+// router.get("/myAcc",(request,respond)=>{
+
+// 	// console.log(currentUser);
+// 	respond.render("signup/student");
+
+// });
+
+router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
+	
+	if(request.user.role=='student')
+	{
+		conn.query(
+			'SELECT * FROM student WHERE userName=?',[request.user.username],
+			function(err, results, fields) {
+				if(err)
+				console.log(err);
+				respond.render("signup/studentEdit",{data:results[0]});
+			  }
+		);
+		
+	}
+	else
+	respond.render("signup/company");
+	
+});
+
+router.post("/myAcc",middleware.isLoggedIn,(request,respond)=>{
+	
+	console.log("posted");
+	respond.redirect("/movies");
+	const un=1233;
+	console.log(request.user);
+	console.log(request.body);
+	const body=request.body;
+	
+	
+	if(request.user.role=='student')
+	{
+		conn.query(
+			'UPDATE student SET userName=?, sname=?,usn=?, department=?,address=?,contactNo=?,cgpa=? WHERE userName=?',[request.user.username,body.sName,body.sUsn,body.sDepartment,body.sAddress,body.sContactNo,body.sCGPA,request.user.username],
+			function(err, results, fields) {
+				if(err)
+				console.log(err);
+				console.log(results); // results contains rows returned by server
+				// console.log(fields); // fields contains extra meta data about results, if available
+			  }
+		);
+		
+	}
+	else
+	respond.render("signup/company");
+	
 });
 
 //middleware
