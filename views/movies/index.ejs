@@ -11,18 +11,17 @@
 </header>
 
 <div class="row" style="display:flex; flex-wrap: wrap;">
-	<% list.forEach((movies)=>{ %>
+	<% list.forEach((offer)=>{ %>
 		
 	<div class="col-md-3 col-sm-12 mx-1"> 
 		<div class="card mx-auto" >
-			<img src="<%=movies.url%>" class="card-img-top" alt="...">
+			<!-- <img src="" class="card-img-top" alt="..."> -->
 			<div class="card-body">
-				<h5 class="card-title"><%= movies.title %></h5>
-				
-				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				<h5 class="card-title"><%= offer.role %></h5>
+				<p class="card-text"><%= offer.offerDisc %></p>
 			</div>
-
-			<a href="movies/<%=movies._id%>" class="btn btn-warning">More Info</a>
+			
+			<a href="movies/<%=offer.offerID%>" class="btn btn-warning">More Info</a>
 		</div>
 	</div>
 	<%})%>

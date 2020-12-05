@@ -2,40 +2,43 @@ var express = require("express"),
 	router	= express.Router(),
 	middleware=require("../middleware"),
 	Movie 	= require("../models/movies");
+	const conn = require('../dbConfig');
 // Index Page 
 router.get("/",(request,respond)=>{
-	Movie.find(function(err,movie){
-				if(err)
-					{
-				console.log(err);
-					}else{
-			   respond.render("movies/index",{ list:movie, currentUser:request.user});
-				}
-			});
+
+	conn.query(
+		'SELECT * FROM offer',
+        function(err, results, fields) {
+			if(err)
+			console.log(err);
+            respond.render("movies/index",{ list:results, currentUser:request.user});
+          }
+    );
+			
 });
 		
-// Create Page
+// Create offer
 router.post("/",middleware.isLoggedIn,(request,respond)=>{
-	// respond.send("Hello the POst Route");
-	var nMovie = request.body.mName;
-	var nUrl = request.body.mUrl;
-	var nDesciption = request.body.mDescription;
-	var nAuthor ={
-		id: request.user._id,
-		username : request.user.username,
-		role:request.user.role
-	};
-	var nMlist = {
-		title:nMovie,
-		url:nUrl,
-		description:nDesciption,
-		author:nAuthor
-	};
-	Movie.create(nMlist,(err,New_movie)=>{
-		if(err){
-			console.log("Error While adding Data To Db");
-		}
-	});
+	
+	const body=request.body;
+	conn.query(
+		'SELECT * from offer',
+        function(err, offers, fields) {
+			if(err)
+			console.log(err);
+            else{
+				console.log(request.user.username);
+				conn.query(
+					'INSERT INTO offer VALUES (?,?,?,?,?,?,?)',[offers.length+1,body.offerDisc,body.coCgpa,body.lastDate,body.instructions,request.user.username,body.role],
+					function(err, results, fields) {
+						if(err)
+						console.log(err);
+						console.log(results); 
+					  }
+				);
+			}
+          }
+    );
 	request.flash("success","Movie Added");
 	respond.redirect("/movies");
 });
@@ -45,8 +48,29 @@ router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 	respond.render("movies/new",{ currentUser:request.user});
 });
 
-router.get("/register",middleware.isLoggedIn,(request,respond)=>{
+router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
 	respond.render("movies/jobregister",{ currentUser:request.user});
+	console.log(request.user);
+	console.log(request.params);
+
+	conn.query(
+		'SELECT * FROM student WHERE userName=?',[request.user.username],
+        function(err, Sresult, fields) {
+			if(err)
+			console.log(err);
+            else{
+
+				conn.query(
+					'INSERT INTO registration values(?,?)',[request.params.cId,Sresult[0].usn],
+					function(err, results, fields) {
+						if(err)
+						console.log(err);
+						console.log(results); 
+					  }
+				);
+			}
+          }
+    );
 	
 });
 router.post("/register",middleware.isLoggedIn,(request,respond)=>{
@@ -57,14 +81,42 @@ router.post("/register",middleware.isLoggedIn,(request,respond)=>{
 });
 
 // Show Page
-router.get("/:movieId",(request,respond)=>{
-	Movie.findById(request.params.movieId).populate("comments").exec(function(err,foundMovie){
-		if (err){
-		console.log(err);
-	}else{
-		respond.render("movies/show",{movie:foundMovie, currentUser:request.user});
-	}
-	});
+router.get("/:offerId",(request,respond)=>{
+	// Movie.findById(request.params.movieId).populate("comments").exec(function(err,foundMovie){
+	// 	if (err){
+	// 	console.log(err);
+	// }else{
+	// 	respond.render("movies/show",{movie:foundMovie, currentUser:request.user});
+	// }
+	// });
+	console.log(request.params);
+	conn.query(
+		'SELECT * FROM offer WHERE offerid= ?',[request.params.offerId],
+        function(err, results, fields) {
+			if(err)
+			console.log(err);
+			else
+			{
+				console.log(results +"hi");
+				conn.query(
+					'SELECT * FROM company WHERE cId= ?',[results[0].cId],
+					function(err, cresults, fields) {
+						if(err)
+						console.log(err);
+						else
+						{
+							console.log(cresults);
+							
+						respond.render("movies/show",{movie:results[0],comp:cresults[0], currentUser:request.user});
+						}
+					  }
+				);
+			
+			}
+          }
+    );
+
+
 });
 // Edit Details
 router.get("/:id/edit",middleware.checkMovieOwnership,(request,respond)=>{

@@ -86,7 +86,19 @@ router.post("/register/company",middleware.isLoggedIn,(request,respond)=>{
 
 	console.log("posted");
 	respond.redirect("/movies");
-
+	const un=1233;
+	console.log(request.user);
+	console.log(request.body);
+	const body=request.body;
+	conn.query(
+		'INSERT INTO company VALUES (?,?,?,?,?)',[body.cName,request.user.username,body.cInfo,body.address,body.contactNo],
+        function(err, results, fields) {
+			if(err)
+			console.log(err);
+            console.log(results); // results contains rows returned by server
+            // console.log(fields); // fields contains extra meta data about results, if available
+          }
+    );
 });
 
 //LOgin Form 
@@ -114,12 +126,6 @@ router.get("/result",(request,respond)=>{
 });
 
 //MyAcc
-// router.get("/myAcc",(request,respond)=>{
-
-// 	// console.log(currentUser);
-// 	respond.render("signup/student");
-
-// });
 
 router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 	
@@ -136,7 +142,18 @@ router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 		
 	}
 	else
-	respond.render("signup/company");
+	{
+		conn.query(
+			'SELECT * FROM company WHERE cId=?',[request.user.username],
+			function(err, results, fields) {
+				if(err)
+				console.log(err);
+				respond.render("signup/companyEdit",{data:results[0]});
+			  }
+		);
+		
+	}
+	
 	
 });
 
@@ -144,9 +161,6 @@ router.post("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 	
 	console.log("posted");
 	respond.redirect("/movies");
-	const un=1233;
-	console.log(request.user);
-	console.log(request.body);
 	const body=request.body;
 	
 	
@@ -164,7 +178,18 @@ router.post("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 		
 	}
 	else
-	respond.render("signup/company");
+	{
+		conn.query(
+			'UPDATE company SET  cName=?,cInfo=?, address=?,contactNo=? WHERE cId=?',[body.cName,body.cInfo,body.address,body.contactNo,request.user.username],
+			function(err, results, fields) {
+				if(err)
+				console.log(err);
+				console.log(results); // results contains rows returned by server
+				// console.log(fields); // fields contains extra meta data about results, if available
+			  }
+		);
+		
+	}
 	
 });
 
