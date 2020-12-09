@@ -6,9 +6,15 @@
 				<p class="lead">OPTIONS</p>
 				<ul id="leftButton" class="list-group">
 					More Info</a>
-					<a class= "selection" href="/movies/<%=movie.offerId%>" ><li class="list-group-item active">Rectuitment details</li></a>
-  					<a class= "selection" href="/movies/register/<%=comp.cId%>" ><li class="list-group-item active">Register </li></a>
-  					<li class="list-group-item active">Contact Rectuiter</li>
+					<% if(currentUser.role== 'student') {%>
+					 <a class= "selection" href="/movies/<%=movie.offerId%>" ><li class="list-group-item active">Rectuitment details</li></a> 
+					 <a class= "selection" href="/movies/register/<%=comp.cId%>" ><li class="list-group-item active">Register </li></a>
+					<li class="list-group-item active">Contact Rectuiter</li>
+					  <%} else {%>
+					
+						<a class= "selection" href="/movies/<%=movie.offerId%>" ><li class="list-group-item active">Rectuitment details</li></a> 
+						<a class= "selection" href="/movies/company/result" ><li class="list-group-item active"> Result </li></a>
+						<%}%>
 				</ul>
 			</div>
 			<div class="col-md-9">

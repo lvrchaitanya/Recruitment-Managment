@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var MovieSchema = mongoose.Schema({
 	title:String,
-	url:String,
 	description:String,
 	author:{
 		id:{

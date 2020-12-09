@@ -44,3 +44,39 @@
 		</div>
 	</div>
 <% include ../partials/footer %>
+
+<!-- 
+
+conn.query(
+						'SELECT * FROM registration WHERE usn= ?',[results[0].usn],
+						function(err, results2, fields) {
+							if(err)
+							console.log(err);
+							else{
+								console.log(results2[0]); 
+							// respond.render("movies/studentResult");
+								
+							results2.forEach((x)=>{
+								console.log(x.cId);
+								conn.query(
+									'SELECT * FROM company WHERE cId= ?',[x.cId],
+									function(err, results3, fields) {
+										if(err)
+										{console.log(err);
+											
+										}
+										else{
+											
+											companysDetails.push(results3[0]);
+										// respond.render("movies/studentResult");	
+										}
+									  }
+								);
+							});
+							
+							}
+							
+						  }
+						  
+					);
+					 -->

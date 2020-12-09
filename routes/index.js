@@ -6,6 +6,7 @@ var express = require("express"),
 	Movie 	= require("../models/movies"),
 	Comment	= require("../models/comment");
 	const mysql = require('mysql2');
+const { promise } = require("../dbConfig");
 	middleware=require("../middleware");
 	const conn = require('../dbConfig');
 	
@@ -121,8 +122,51 @@ router.get("/logout",(request,respond)=>{
 
 //result
 router.get("/result",(request,respond)=>{
-	request.logout();
-	respond.render("results");
+	
+	
+	
+	console.log(request.user);
+	if(request.user.role=='student')
+	{
+		
+		conn.query(
+			'SELECT * FROM student WHERE userName=?',[request.user.username],
+			 function(err, results, fields) {
+				if(err)
+				console.log(err);
+				else{
+					conn.query(
+						'SELECT * FROM company INNER JOIN registration ON company.cId=registration.cId AND usn=?',[results[0].usn],
+						 function(err, results, fields) {
+							if(err)
+							console.log(err);
+							else{
+							console.log(results);	
+							respond.render("results/studentResult",{detail :results,currentUser:request.user}); 
+							}
+							
+						  }
+						  
+					);	 
+				}
+				
+			  }
+			  
+		);
+		
+	}
+	else{
+
+		conn.query(
+			'SELECT * FROM registration WHERE cId=?',[request.user.username],
+			 function(err, results, fields) {
+				if(err)
+				console.log(err);
+				else{
+					respond.render("results/companyResult",{detail :results,currentUser:request.user});
+				}
+			});
+	}
 });
 
 //MyAcc

@@ -12,7 +12,7 @@
 
 <div class="row" style="display:flex; flex-wrap: wrap;">
 	<% list.forEach((offer)=>{ %>
-		
+		<% if(!currentUser || currentUser.role == 'student' || currentUser.username == offer.cId)  { %> 
 	<div class="col-md-3 col-sm-12 mx-1"> 
 		<div class="card mx-auto" >
 			<!-- <img src="" class="card-img-top" alt="..."> -->
@@ -24,6 +24,7 @@
 			<a href="movies/<%=offer.offerID%>" class="btn btn-warning">More Info</a>
 		</div>
 	</div>
+	<%}%>
 	<%})%>
 </div>
 <% include ../partials/footer %>

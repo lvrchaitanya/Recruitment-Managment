@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+
+
+<div class="row" style="display:flex; flex-wrap: wrap;">
+	<% detail.forEach((details)=>{ %>
+		
+	<div class="col-md-3 col-sm-12 mx-1"> 
+		<div class="card mx-auto" >
+			<!-- <img src="" class="card-img-top" alt="..."> -->
+			<div class="card-body">
+				<h5 class="card-title">STATUS > <%= details.status %></h5>
+				<p class="card-text">ROUNF NO > <%= details.roundNo %></p>
+				<p class="card-text">COMANY NAME ><%= details.cName %></p>
+			</div>
+			
+			
+		</div>
+	</div>
+	
+	<%})%>
+</div>
+
+<% include ../partials/footer %>

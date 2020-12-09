@@ -49,10 +49,9 @@ router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 });
 
 router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
-	respond.render("movies/jobregister",{ currentUser:request.user});
-	console.log(request.user);
-	console.log(request.params);
-
+	request.flash("success","Movie Added");
+	respond.redirect("/movies");
+	
 	conn.query(
 		'SELECT * FROM student WHERE userName=?',[request.user.username],
         function(err, Sresult, fields) {
@@ -61,16 +60,24 @@ router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
             else{
 
 				conn.query(
-					'INSERT INTO registration values(?,?)',[request.params.cId,Sresult[0].usn],
+					'INSERT INTO registration(cId,usn) values(?,?)',[request.params.cId,Sresult[0].usn],
 					function(err, results, fields) {
 						if(err)
 						console.log(err);
-						console.log(results); 
+						else
+						{
+							request.flash("success","Movie Added");
+	                       console.log(results);
+						}
+						 
 					  }
 				);
 			}
           }
-    );
+	);
+	
+	request.flash("success","REGISTRATION FAILED");
+	
 	
 });
 router.post("/register",middleware.isLoggedIn,(request,respond)=>{
@@ -137,6 +144,39 @@ router.put("/:id",middleware.checkMovieOwnership,(request,respond)=>{
 		}
 	});
 });
+
+// RESULT
+
+router.get("/company/result",middleware.isLoggedIn,(request,respond)=>{
+
+	
+	respond.render("movies/results",{ currentUser:request.user});
+	
+
+});
+
+router.post("/company/result",middleware.isLoggedIn,(request,respond)=>{
+
+	var res=0;
+	conn.query(
+		'UPDATE registration set roundNo= ? ,status =? WHERE usn= ? AND cId=?',[request.body.roundNo,request.body.status,request.body.usn,request.user.username],
+        function(err, results, fields) {
+			if(err)
+			console.log(err);
+			else
+			{
+				res=results.affectedRows;
+				console.log(results);
+			}
+			
+          }
+	);
+	
+	request.flash("success",` ${request.body.usn} Results UPDATED`);
+
+	respond.redirect("/movies/company/result");
+});
+
 // Delete The Movie
 router.delete("/:id",middleware.checkMovieOwnership,(request,respond)=>{
 	Movie.findByIdAndRemove(request.params.id,(err)=>{
