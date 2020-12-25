@@ -136,7 +136,7 @@ router.get("/result",(request,respond)=>{
 				console.log(err);
 				else{
 					conn.query(
-						'SELECT * FROM company INNER JOIN registration ON company.cId=registration.cId AND usn=?',[results[0].usn],
+						'SELECT * FROM offer INNER JOIN registration ON offer.offerID=registration.offerID AND registration.usn=?',[results[0].usn],
 						 function(err, results, fields) {
 							if(err)
 							console.log(err);
@@ -158,7 +158,7 @@ router.get("/result",(request,respond)=>{
 	else{
 
 		conn.query(
-			'SELECT * FROM registration WHERE cId=?',[request.user.username],
+			'SELECT * from student INNER JOIN registration ON student.usn= registration.usn where offerID IN (SELECT offerID FROM offer where offer.cId=?)',[request.user.username],
 			 function(err, results, fields) {
 				if(err)
 				console.log(err);
@@ -180,7 +180,7 @@ router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 			function(err, results, fields) {
 				if(err)
 				console.log(err);
-				respond.render("signup/studentEdit",{data:results[0]});
+				respond.render("signup/studentEdit",{data:results[0],currentUser:request.user});
 			  }
 		);
 		
@@ -192,7 +192,7 @@ router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 			function(err, results, fields) {
 				if(err)
 				console.log(err);
-				respond.render("signup/companyEdit",{data:results[0]});
+				respond.render("signup/companyEdit",{data:results[0],currentUser:request.user});
 			  }
 		);
 		

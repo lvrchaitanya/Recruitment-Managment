@@ -1,23 +1,27 @@
 <% include ../partials/header %>
 
 
-<div class="row" style="display:flex; flex-wrap: wrap;">
-	<% detail.forEach((details)=>{ %>
-		
-	<div class="col-md-3 col-sm-12 mx-1"> 
-		<div class="card mx-auto" >
-			<!-- <img src="" class="card-img-top" alt="..."> -->
-			<div class="card-body">
-				<h5 class="card-title">USN > <%= details.usn %></h5>
-				<p class="card-text">ROUNF NO > <%= details.roundNo %></p>
-				<p class="card-text">STATUS ><%= details.status %></p>
-			</div>
-			
-			
-		</div>
-	</div>
-	
-	<%})%>
-</div>
-
+<table class="table" id='Cresult'>
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">USN</th>
+		<th scope="col">Round No</th>
+		<th scope="col">Status</th>
+		<th scope="col">More Info</th>
+	  </tr>
+	</thead>
+	<tbody>
+		<% x=1;%>
+		<% detail.forEach((details)=>{ %>
+			<tr>
+				<th scope="row"><%= x++ %></th>
+				<td> <%= details.usn %></td>
+				<td><%= details.roundNo %></td>
+				<td><%= details.status %></td>
+				<td><a class= "selection" href="/movies/<%=details.offerID%>" ><li class="list-group-item active tb"> More Info </li></a></td>
+			</tr>
+		<%})%>
+	</tbody>
+  </table>
 <% include ../partials/footer %>

@@ -1,16 +1,17 @@
 <% include ../partials/header %>
 
 
-<div class="row" style="display:flex; flex-wrap: wrap;">
+<div class="row" id="resultRow" style="display:flex; flex-wrap: wrap;">
 	<% detail.forEach((details)=>{ %>
 		
 	<div class="col-md-3 col-sm-12 mx-1"> 
-		<div class="card mx-auto" >
-			<!-- <img src="" class="card-img-top" alt="..."> -->
+		<div class="card mx-auto" id="resultCard">
+			
 			<div class="card-body">
 				<h5 class="card-title">STATUS > <%= details.status %></h5>
 				<p class="card-text">ROUNF NO > <%= details.roundNo %></p>
-				<p class="card-text">COMANY NAME ><%= details.cName %></p>
+				<p class="card-text">ROLE OFFERED >  <%= details.role %></p>
+				<a class= "selection" href="/movies/<%=details.offerID%>" ><li class="list-group-item active" id="SRB"> More Info </li></a>
 			</div>
 			
 			

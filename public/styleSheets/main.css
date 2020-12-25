@@ -21,16 +21,47 @@ hr{
     text-decoration: none;
 }
 
+#Cresult{
+
+    margin: 5%;
+    width: 90%;
+}
+
+#Cresult .tb{
+    width: 50%;
+    height: 80%;
+}
+
+#resultCard{
+    margin-top: 15%;
+}
+#resultRow{
+    margin-left: 12%;
+}
+#SRB{
+    width: 80%;
+    text-align: center;
+    margin-left: 8%;
+    margin-top: 10%;
+}
+
+#job{
+    margin-top: 3%;
+    
+}
 
 .trademark{
         text-align: center;
         background-color:#e9ecef;
         padding: 3%;
-    margin-top: 5%;
+    margin-top: 10%;
+    margin-bottom: 0;
     color: black;
     font-weight: 300;
     font-size: larger;
     letter-spacing: 3px;
+    
+    width: 100%;
 }
 
 #leftButton :hover{

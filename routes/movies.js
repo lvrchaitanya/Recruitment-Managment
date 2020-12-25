@@ -29,7 +29,7 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
             else{
 				console.log(request.user.username);
 				conn.query(
-					'INSERT INTO offer VALUES (?,?,?,?,?,?,?)',[offers.length+1,body.offerDisc,body.coCgpa,body.lastDate,body.instructions,request.user.username,body.role],
+					'INSERT INTO offer(offerDisc,coCgpa,lastDate,logo,cId,role) VALUES (?,?,?,?,?,?)',[body.offerDisc,body.coCgpa,body.lastDate,body.logo,request.user.username,body.role],
 					function(err, results, fields) {
 						if(err)
 						console.log(err);
@@ -48,9 +48,9 @@ router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 	respond.render("movies/new",{ currentUser:request.user});
 });
 
-router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
-	request.flash("success","Movie Added");
-	respond.redirect("/movies");
+router.get("/register/:offerID",middleware.isLoggedIn,(request,respond)=>{
+	
+	
 	
 	conn.query(
 		'SELECT * FROM student WHERE userName=?',[request.user.username],
@@ -60,13 +60,13 @@ router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
             else{
 
 				conn.query(
-					'INSERT INTO registration(cId,usn) values(?,?)',[request.params.cId,Sresult[0].usn],
+					'INSERT INTO registration(offerID,usn) values(?,?)',[request.params.offerID,Sresult[0].usn],
 					function(err, results, fields) {
 						if(err)
 						console.log(err);
 						else
 						{
-							request.flash("success","Movie Added");
+							
 	                       console.log(results);
 						}
 						 
@@ -76,8 +76,8 @@ router.get("/register/:cId",middleware.isLoggedIn,(request,respond)=>{
           }
 	);
 	
-	request.flash("success","REGISTRATION FAILED");
-	
+	request.flash("success","Registered Sucessfully");
+	respond.redirect("/movies");
 	
 });
 router.post("/register",middleware.isLoggedIn,(request,respond)=>{
@@ -147,19 +147,19 @@ router.put("/:id",middleware.checkMovieOwnership,(request,respond)=>{
 
 // RESULT
 
-router.get("/company/result",middleware.isLoggedIn,(request,respond)=>{
+router.get("/company/result/:offerID",middleware.isLoggedIn,(request,respond)=>{
 
 	
-	respond.render("movies/results",{ currentUser:request.user});
+	respond.render("movies/results",{ currentUser:request.user, offerID:request.params.offerID});
 	
 
 });
 
-router.post("/company/result",middleware.isLoggedIn,(request,respond)=>{
+router.post("/company/result/:offerID",middleware.isLoggedIn,(request,respond)=>{
 
 	var res=0;
 	conn.query(
-		'UPDATE registration set roundNo= ? ,status =? WHERE usn= ? AND cId=?',[request.body.roundNo,request.body.status,request.body.usn,request.user.username],
+		'UPDATE registration set roundNo= ? ,status =? WHERE usn= ? AND offerID=?',[request.body.roundNo,request.body.status,request.body.usn,request.params.offerID],
         function(err, results, fields) {
 			if(err)
 			console.log(err);
@@ -174,22 +174,57 @@ router.post("/company/result",middleware.isLoggedIn,(request,respond)=>{
 	
 	request.flash("success",` ${request.body.usn} Results UPDATED`);
 
-	respond.redirect("/movies/company/result");
+	respond.redirect(`/movies/company/result/${request.params.offerID}`);
+});
+//Update offer
+router.get("/update/offer/:offerID",(request,respond)=>{
+	
+	
+		conn.query(
+			'SELECT * FROM offer WHERE offerID=?',[request.params.offerID],
+			function(err, results, fields) {
+				if(err)
+				console.log(err);
+				respond.render("movies/offerEdit",{data:results[0],currentUser:request.user});
+			  }
+		);
+	
+		
 });
 
-// Delete The Movie
-router.delete("/:id",middleware.checkMovieOwnership,(request,respond)=>{
-	Movie.findByIdAndRemove(request.params.id,(err)=>{
-		if(err){
-			respond.redirect("/movies");
+router.post("/update/offer/:offerID",(request,respond)=>{
+	const body=request.body;
+	conn.query(
+		'UPDATE offer SET  offerDisc=?,coCgpa=?, logo=?,role=? WHERE offerID=?',[body.offerDisc,body.coCgpa,body.logo,body.role,request.params.offerID],
+		function(err, results, fields) {
+			if(err)
 			console.log(err);
-		}else{
-			request.flash("success","Deleted");
-			respond.redirect("/movies");
-		}
-	});
-	// respond.send("you are trying to delete");
+			else
+			console.log(results);
+		  }
+	);
+	respond.redirect(`/movies//update/offer/${request.params.offerID}`);
 });
 
+// Delete The offer
+router.get("/company/delete/:offerID",middleware.isLoggedIn,(request,respond)=>{
+
+	conn.query(
+		'DELETE FROM offer where offerID=? ',[request.params.offerID],
+        function(err, results, fields) {
+			if(err)
+			console.log(err);
+			else
+			{
+				console.log(results);
+			}
+			
+          }
+	);
+	
+	respond.redirect("/movies");
+	
+
+});
 
 module.exports = router;
