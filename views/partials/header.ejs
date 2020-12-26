@@ -24,9 +24,13 @@
 					<a class="nav-link" href="/movies">Jobs </a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/result">Results </a>
+					<a class="nav-link" href="/result"> Report </a>
 				</li>
-				
+				<%if(currentUser && currentUser.role=="recruiter"){%>
+					<li class="nav-item">
+						<a class="nav-link" href="/SA"> Feedback Analysis </a>
+					</li>
+				<%}%>
 			</ul>
 			
 			<ul class=" navbar-nav">

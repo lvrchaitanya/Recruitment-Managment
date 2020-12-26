@@ -62,7 +62,7 @@ passport.deserializeUser(User.deserializeUser());
 
 apk.use("/",indexRoutes);
 apk.use("/movies",moviesRoutes);
-apk.use("/movies/:id/comments",commentRoutes);
+apk.use("/comments",commentRoutes);
 
 
 apk.get("*",(request,respond)=>{

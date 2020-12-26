@@ -5,42 +5,47 @@ var express = require("express"),
 	Comment	= require("../models/comment");
 
 //Comments NEW
-router.get("/new",middleware.isLoggedIn,(request,respond)=>{
-	Movie.findById(request.params.id,function(err,foundMovie){
-	if (err){
-		console.log(err);
-	}else{
-		console.log("Showing:=>");
-		console.log("Comment to :: "+foundMovie.title);
-		respond.render("comments/new",{movie:foundMovie, currentUser:request.user});
-	}
-	});
+router.get("/new/:offerID",(request,respond)=>{
+
+	respond.render("comments/new",{ currentUser:request.user,offerID:request.params.offerID});
+	
 });
 
 //Comments Create
-router.post("/",middleware.isLoggedIn,(request,respond)=>{
-	Movie.findById(request.params.id,(err,foundMovie)=>{
+router.post("/:offerID",middleware.isLoggedIn,(request,respond)=>{
+	
+	console.log(request.body);
+	Comment.create(request.body,(err,newComment)=>{
+
 		if(err){
 			console.log(err);
 		}else{
-			Comment.create(request.body.com,(err,newComment)=>{
-				if(err){
-					console.log(err);
-				}else{
-					//add usernamne and id 
-					//savecoment
-					newComment.author.id = request.user._id;
-					newComment.author.username = request.user.username;
-					newComment.save();
-					foundMovie.comments.push(newComment);
-					foundMovie.save();
-					request.flash("success","Successfully Comment Added");
-					respond.redirect("/movies/"+foundMovie._id);
-				}
-			});
+			newComment.username=request.user.username;
+			newComment.offerID=request.params.offerID;
+			newComment.save();
 		}
 	});
+	respond.redirect(`/movies/${request.params.offerID}`);
 });
+//Recruiter comment
+router.get("/edit/:_id",(request,respond)=>{
+	
+	respond.render("comments/edit",{ currentUser:request.user,_id:request.params._id});
+	
+});
+
+router.post("/response/:_id",(request,respond)=>{
+
+	Comment.findById(request.params._id,function(err,result){
+
+		result.ans=request.body.ans;
+		result.save();
+		respond.redirect(`/movies/${result.offerID}`);
+	});
+	
+	
+});
+
 //EDit
 router.get("/:comment_id/edit",middleware.checkCommentOwnership,(request,respond)=>{
 	Comment.findById(request.params.comment_id,(err,foundComment)=>{

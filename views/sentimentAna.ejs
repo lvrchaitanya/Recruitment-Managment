@@ -1,0 +1,54 @@
+<% include partials/header %>
+
+
+<table class="table" id='Cresult'>
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">offer Details</th>
+		<th scope="col">Feedback</th>
+		<th scope="col">rating</th>
+		<th scope="col">suggestion</th>
+	  </tr>
+	</thead>
+	<tbody>
+		<% x=1;%>
+		<% pos.forEach((details)=>{ %>
+			<tr>
+                <th scope="row"><%= x++ %></th>
+                <td><a class= "selection" href="/movies/<%=details.offerID%>" ><li class="list-group-item active tb"> More Info </li></a></td>
+				<td> <%= details.feedback %></td>
+				<td><%= details.rating %></td>
+				<td><%= details.suggestion %></td>
+				
+			</tr>
+		<%})%>
+	</tbody>
+  </table>
+
+
+<table class="table" id='Cresult'>
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">offer Details</th>
+		<th scope="col">Feedback</th>
+		<th scope="col">rating</th>
+		<th scope="col">suggestion</th>
+	  </tr>
+	</thead>
+	<tbody>
+		<% x=1;%>
+		<% neg.forEach((details)=>{ %>
+			<tr>
+                <th scope="row"><%= x++ %></th>
+                <td><a class= "selection" href="/movies/<%=details.offerID%>" ><li class="list-group-item active tb"> More Info </li></a></td>
+				<td> <%= details.feedback %></td>
+				<td><%= details.rating %></td>
+				<td><%= details.suggestions %></td>
+				
+			</tr>
+		<%})%>
+	</tbody>
+  </table>
+<% include partials/footer %>

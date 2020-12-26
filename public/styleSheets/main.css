@@ -32,6 +32,11 @@ hr{
     height: 80%;
 }
 
+#Comment{
+    margin:4% 5%;
+    font-weight: 500;
+    font-size: 110%;
+}
 #resultCard{
     margin-top: 15%;
 }

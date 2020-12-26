@@ -16,7 +16,7 @@
 		<% detail.forEach((details)=>{ %>
 			<tr>
 				<th scope="row"><%= x++ %></th>
-				<td> <%= details.usn %></td>
+				<td><a href="/studDetails/<%= details.usn %>"><%= details.usn %></a> </td>
 				<td><%= details.roundNo %></td>
 				<td><%= details.status %></td>
 				<td><a class= "selection" href="/movies/<%=details.offerID%>" ><li class="list-group-item active tb"> More Info </li></a></td>

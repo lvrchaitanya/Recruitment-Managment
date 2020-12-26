@@ -1,14 +1,12 @@
 var express = require("express"),
 	router	= express.Router(),
 	passport	= require("passport"),
-	User			= require('../models/user.js'),
-	LocalStrategy	= require('passport-local'),
-	Movie 	= require("../models/movies"),
-	Comment	= require("../models/comment");
+	User			= require('../models/user.js');
 	const mysql = require('mysql2');
 const { promise } = require("../dbConfig");
 	middleware=require("../middleware");
 	const conn = require('../dbConfig');
+	var Sentiment = require('sentiment');
 	
 //Root Route
 router.get("/",function(request,respond){
@@ -67,7 +65,7 @@ router.post("/register/student",middleware.isLoggedIn,(request,respond)=>{
 	console.log(request.body);
 	const body=request.body;
 	conn.query(
-		'INSERT INTO student VALUES (?,?,?,?,?,?,?)',[request.user.username,body.sName,body.sUsn,body.sDepartment,body.sAddress,body.sContactNo,body.sCGPA],
+		'INSERT INTO student VALUES (?,?,?,?,?,?,?,?)',[request.user.username,body.sName,body.sUsn,body.sDepartment,body.sAddress,body.sContactNo,body.sCGPA,body.resume],
         function(err, results, fields) {
 			if(err)
 			console.log(err);
@@ -169,6 +167,19 @@ router.get("/result",(request,respond)=>{
 	}
 });
 
+//student details
+router.get("/studDetails/:usn",middleware.isLoggedIn,(request,respond)=>{
+	 
+	conn.query(
+		'SELECT * FROM student WHERE usn=?',[request.params.usn],
+		function(err, results, fields) {
+			if(err)
+			console.log(err);
+			respond.render("movies/studentDet",{data:results[0],currentUser:request.user});
+		  }
+	);
+});
+
 //MyAcc
 
 router.get("/myAcc",middleware.isLoggedIn,(request,respond)=>{
@@ -211,7 +222,7 @@ router.post("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 	if(request.user.role=='student')
 	{
 		conn.query(
-			'UPDATE student SET userName=?, sname=?,usn=?, department=?,address=?,contactNo=?,cgpa=? WHERE userName=?',[request.user.username,body.sName,body.sUsn,body.sDepartment,body.sAddress,body.sContactNo,body.sCGPA,request.user.username],
+			'UPDATE student SET userName=?, sname=?,usn=?, department=?,address=?,contactNo=?,cgpa=?,resume=? WHERE userName=?',[request.user.username,body.sName,body.sUsn,body.sDepartment,body.sAddress,body.sContactNo,body.sCGPA,body.resume,request.user.username],
 			function(err, results, fields) {
 				if(err)
 				console.log(err);
@@ -234,6 +245,34 @@ router.post("/myAcc",middleware.isLoggedIn,(request,respond)=>{
 		);
 		
 	}
+	
+});
+
+
+//Sentiment analisis
+router.get("/SA",(request,respond)=>{
+		
+	Feedback.find({cId:request.user.username},function(err,result){
+		if(err)
+		console.log(err);
+		else
+		{  var pos=[];
+			var neg=[];
+			var sentiment = new Sentiment();
+
+			result.forEach(x => {
+				var result = sentiment.analyze(x.feedback);
+				
+				if(result.score <0)
+				neg.push(x);
+				else
+				pos.push(x);
+			});
+
+			respond.render("sentimentAna",{currentUser:request.user,neg:neg,pos:pos});
+		}
+	});
+
 	
 });
 

@@ -3,6 +3,8 @@ var express = require("express"),
 	middleware=require("../middleware"),
 	Movie 	= require("../models/movies");
 	const conn = require('../dbConfig');
+   Feedback = require("../models/feedback");
+	
 // Index Page 
 router.get("/",(request,respond)=>{
 
@@ -33,6 +35,7 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 					function(err, results, fields) {
 						if(err)
 						console.log(err);
+						else
 						console.log(results); 
 					  }
 				);
@@ -89,16 +92,9 @@ router.post("/register",middleware.isLoggedIn,(request,respond)=>{
 
 // Show Page
 router.get("/:offerId",(request,respond)=>{
-	// Movie.findById(request.params.movieId).populate("comments").exec(function(err,foundMovie){
-	// 	if (err){
-	// 	console.log(err);
-	// }else{
-	// 	respond.render("movies/show",{movie:foundMovie, currentUser:request.user});
-	// }
-	// });
-	console.log(request.params);
+
 	conn.query(
-		'SELECT * FROM offer WHERE offerid= ?',[request.params.offerId],
+		'SELECT * FROM offer WHERE offerID=?',[request.params.offerId],
         function(err, results, fields) {
 			if(err)
 			console.log(err);
@@ -112,9 +108,14 @@ router.get("/:offerId",(request,respond)=>{
 						console.log(err);
 						else
 						{
-							console.log(cresults);
-							
-						respond.render("movies/show",{movie:results[0],comp:cresults[0], currentUser:request.user});
+							Comment.find({offerID:request.params.offerId},function(err,result){
+								if(err)
+								console.log(err);
+								else{
+									respond.render("movies/show",{movie:results[0],comp:cresults[0],comments:result ,currentUser:request.user});
+								}
+							});
+						
 						}
 					  }
 				);
@@ -125,24 +126,12 @@ router.get("/:offerId",(request,respond)=>{
 
 
 });
+
 // Edit Details
 router.get("/:id/edit",middleware.checkMovieOwnership,(request,respond)=>{
 	Movie.findById(request.params.id,(err,foundMovie)=>{
 		respond.render("movies/edit",{movie:foundMovie});
 	} );
-});
-//Backend
-router.put("/:id",middleware.checkMovieOwnership,(request,respond)=>{
-	Movie.findByIdAndUpdate(request.params.id,request.body.m,(err,updatedMovie)=>{
-		if(err){
-			respond.redirect("/movies");
-		}else{
-			// console.log(request.body.m);
-			// console.log(updatedMovie);
-			request.flash("success","Movie Edited");
-			respond.redirect("/movies/"+updatedMovie._id);
-		}
-	});
 });
 
 // RESULT
@@ -203,7 +192,7 @@ router.post("/update/offer/:offerID",(request,respond)=>{
 			console.log(results);
 		  }
 	);
-	respond.redirect(`/movies//update/offer/${request.params.offerID}`);
+	respond.redirect(`/movies/update/offer/${request.params.offerID}`);
 });
 
 // Delete The offer
@@ -221,10 +210,54 @@ router.get("/company/delete/:offerID",middleware.isLoggedIn,(request,respond)=>{
 			
           }
 	);
+respond.redirect("/movies");
 	
-	respond.redirect("/movies");
-	
-
 });
+
+//FEEDBACK
+router.get("/feedback/:offerID",(request,respond)=>{
+		
+	respond.render("feedback",{currentUser:request.user,offerID:request.params.offerID});
+});
+
+router.post("/feedback/:offerID",(request,respond)=>{
+	
+	console.log(request.body);
+	Feedback.create(request.body,(err,newComment)=>{
+		if(err){
+			console.log(err);
+		}else{
+			newComment.offerID=request.params.offerID;
+
+			conn.query(
+				'SELECT cId FROM offer where offerID=? ',[request.params.offerID],
+				function(err, results, fields) {
+					if(err)
+					{console.log(err);
+						newComment.save();
+					}
+					else
+					{
+						newComment.cId=results[0].cId;
+						newComment.save();
+					}
+					
+				  }
+			);
+		}
+	});
+	respond.redirect(`/movies/${request.params.offerID}`)
+});
+
+
+router.get("/feedback/:offerID",(request,respond)=>{
+		
+	respond.render("feedback",{currentUser:request.user,offerID:request.params.offerID});
+});
+
+
+
+
+
 
 module.exports = router;
