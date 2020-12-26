@@ -2,7 +2,6 @@ var middlewareObject = {},
 	Movie 	= require("../models/movies"),
 	Comment	= require("../models/comment");
 
-
 middlewareObject.checkMovieOwnership =function (request,respond,next){
 	if(request.isAuthenticated()){
 		Movie.findById(request.params.id,(err,foundMovie)=>{
