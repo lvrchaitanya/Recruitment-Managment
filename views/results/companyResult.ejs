@@ -24,4 +24,38 @@
 		<%})%>
 	</tbody>
   </table>
+
+  <div class="col-md-9">
+	<div class="card"  id="rStat">
+		
+		  <div class="card-body" >
+			<h3 class="card-title" id="rst">Company Stats</h3>
+			<p class="card-text" id="rst">Total PASS:> <%=stat['pass']%></p>
+			<p class="card-text" id="rst">Total FAIL :> <%=stat['fail']%></p>
+			<p class="card-text" id="rst">In Progress :> <%=stat['na']%></p>
+			
+		</div>
+		
+	</div>
+</div>
+
+
+
+<h1 class=" d-flex justify-content-center" id="roleSearch">
+	Search Stat by role
+</h1>
+<div class=row>
+	<form action="/Rstat" class="mx-auto" method="POST">
+		<div class="form-group">
+			<input class="form-control " type="text" name="name" placeholder=" Role " required>
+		</div>
+		<div class="form-group">
+			<input class="btn  form-control btn-primary" type="submit">
+		</div>
+	</form>
+</div>
+
+
+
+<a class="btn btn-primary btn-lg" href="/Tstat" role="button" id="TstatBt" > View Total Stat </a>
 <% include ../partials/footer %>

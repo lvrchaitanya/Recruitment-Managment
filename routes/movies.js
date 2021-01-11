@@ -107,7 +107,10 @@ router.get("/:offerId",(request,respond)=>{
 						if(err)
 						console.log(err);
 						else
-						{
+						{  
+							// stat
+							
+							//statend
 							Comment.find({offerID:request.params.offerId},function(err,result){
 								if(err)
 								console.log(err);

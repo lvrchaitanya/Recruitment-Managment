@@ -21,10 +21,33 @@ hr{
     text-decoration: none;
 }
 
+table#ana{
+    margin:0px;
+   
+ 
+}
+
+#rStat{
+    border: 0px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 20px;
+    margin-left: 30%;
+}
+#rst{
+    margin-top: 30px;
+}
 #Cresult{
 
     margin: 5%;
     width: 90%;
+}
+
+#TstatBt{
+margin-top: 5%;
+   margin-left: 44%;
+   padding: 1.5%;
 }
 
 #Cresult .tb{
@@ -32,6 +55,9 @@ hr{
     height: 80%;
 }
 
+#roleSearch{
+    margin-top: 100px;
+}
 #Comment{
     margin:4% 5%;
     font-weight: 500;
