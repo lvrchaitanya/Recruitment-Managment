@@ -1,9 +1,9 @@
 <% include ../partials/header %>
 
-<h1 class=" d-flex justify-content-center">
+<h1 class=" d-flex justify-content-center updateDet">
 	Register for company
 </h1>
-<div class=row>
+<div class=row id="Accdet">
 	<form action="/MyAcc" class="mx-auto" method="POST">
 		<div class="form-group">
 			<input class="form-control " type="text" name="cName" value="<%=data.cName%>" required>
@@ -22,7 +22,9 @@
 		<div class="form-group">
 			<input class="btn  form-control btn-primary" type="submit">
 		</div>
+		<a href="/movies">Go Back </a>ß
 	</form>
+
 </div>
 
 

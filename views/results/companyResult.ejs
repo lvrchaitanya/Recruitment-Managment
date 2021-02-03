@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 
 
-<table class="table" id='Cresult'>
+<table class="table" id='Cresult' style="color: white;">
 	<thead>
 	  <tr>
 		<th scope="col">#</th>
@@ -26,22 +26,21 @@
   </table>
 
   <div class="col-md-9">
-	<div class="card"  id="rStat">
+	<div class="cardui" style="color: white;"  id="rStat">
 		
 		  <div class="card-body" >
 			<h3 class="card-title" id="rst">Company Stats</h3>
-			<p class="card-text" id="rst">Total PASS:> <%=stat['pass']%></p>
-			<p class="card-text" id="rst">Total FAIL :> <%=stat['fail']%></p>
-			<p class="card-text" id="rst">In Progress :> <%=stat['na']%></p>
-			
-		</div>
+			<p class="card-text" id="rst">Total PASS &rarr; <%=stat['pass']%></p>
+			<p class="card-text" id="rst">Total FAIL &rarr; <%=stat['fail']%></p>
+			<p class="card-text" id="rst">In Progress &rarr; <%=stat['na']%></p>
+		  </div>
 		
 	</div>
 </div>
 
 
 
-<h1 class=" d-flex justify-content-center" id="roleSearch">
+<h1 class=" d-flex justify-content-center" id="roleSearch" style="color: white;">
 	Search Stat by role
 </h1>
 <div class=row>

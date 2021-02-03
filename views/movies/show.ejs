@@ -3,9 +3,9 @@
 	<div class="container">
 		<div class="row mt-5">
 			<div class="col-md-3">
-				<p class="lead">OPTIONS</p>
+				<p class="lead" style="color: white; font-size: 30px ;padding-bottom: 8%;">OPTIONS</p>
 				<ul id="leftButton" class="list-group">
-					More Info</a>
+					
 					<% if(!currentUser || currentUser.role== 'student') {%>
 					 <a class= "selection" href="/movies/<%=movie.offerId%>" ><li class="list-group-item active">Rectuitment details</li></a> 
 					 <a class= "selection" href="/movies/register/<%=movie.offerID%>" ><li class="list-group-item active">Register </li></a>
@@ -22,20 +22,20 @@
 				</ul>
 			</div>
 			<div class="col-md-9">
-				<div class="card">
+				<div class="card" id="offerCard">
 					
   					<div class="card-body">
 						<h3 class="card-title"><%=comp.cName%></h3>
-						<p class="card-text">Company Info:> <%=comp.cInfo%></p>
-						<p class="card-text">Profile/Role :> <%=movie.role%></p>
-						<p class="card-text">Job Description:> <%=movie.offerDisc%></p>
-						<p class="card-text">Criteria :> <%=movie.coCgpa%> CGPA</p>
-						<p class="card-text">Last Date :> <%=movie.lastDate%> </p>
+						<p class="card-text">Company Info &rarr; <%=comp.cInfo%></p>
+						<p class="card-text">Profile/Role &rarr; <%=movie.role%></p>
+						<p class="card-text">Job Description &rarr; <%=movie.offerDisc%></p>
+						<p class="card-text">Criteria &rarr; <%=movie.coCgpa%> CGPA</p>
+						<p class="card-text">Last Date &rarr; <%=movie.lastDate%> </p>
 					</div>
 					
 				</div>
 
-				<div class="card-footer text-muted">
+				<div class="card-footer text-muted" id="commentCard">
 					<a href="/comments/new/<%=movie.offerID%>" class="btn btn-outline-secondary text-right">Ask a Question</a>
 					<hr>
 					

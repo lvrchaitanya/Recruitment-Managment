@@ -42,7 +42,7 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 			}
           }
     );
-	request.flash("success","Movie Added");
+	request.flash("success","Job Added");
 	respond.redirect("/movies");
 });
 

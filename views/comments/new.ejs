@@ -1,18 +1,22 @@
 <% include ../partials/header %>
-<h1 class=" d-flex justify-content-center">
-	Ask Your Question
-	<h2 class=" d-flex justify-content-center">Testing</h2>
-</h1>
-<div class=row>
 
-	<form action="/comments/<%=offerID%>" class="mx-auto" method="POST">
-		<div class="form-group">
-			<input class="form-control " type="text" name="que" placeholder="Comment" required>
-		</div>
-		<div class="form-group">
-			<input class="btn  form-control btn-primary" type="submit">
-		</div>
-	</form>
+<div class="register">
+
+	<h1 class=" d-flex justify-content-center">
+		Ask Your Question
+	</h1>
+	<div class=row>
+		
+		<form action="/comments/<%=offerID%>" class="mx-auto" method="POST">
+			<div class="form-group">
+				<input class="form-control " type="text" name="que" placeholder="Comment" required>
+			</div>
+			<div class="form-group">
+				<input class="btn  form-control btn-primary" type="submit">
+			</div>
+		</form>
+		<a href="/movies" >Go Back </a>
+	</div>
+	
 </div>
-<a href="/movies">Go Back </a>
 <% include ../partials/footer %>

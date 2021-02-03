@@ -15,14 +15,14 @@
 		<% if(!currentUser || currentUser.role == 'student' || currentUser.username == offer.cId)  { %> 
 	<div class="col-sm-4  " id="job"> 
 		
-		<div class="card mx-auto" >
+		<div class="card mx-auto" id="cardui">
 			<img src="<%= offer.logo %>" class="card-img-top" alt="NO LOGO">
 			<div class="card-body">
 				<h5 class="card-title"><%= offer.role %></h5>
 				<p class="card-text"><%= offer.offerDisc %></p>
 			</div>
 			
-			<a href="movies/<%=offer.offerID%>" class="btn btn-warning">More Info</a>
+			<a href="movies/<%=offer.offerID%>" class="btn btn-primary">More Info</a>
 		</div>
 	</div>
 	<%}%>
