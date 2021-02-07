@@ -12,6 +12,8 @@ var Sentiment = require('sentiment');
 router.get("/", function (request, respond) {
 
 	respond.redirect("/movies");
+
+	
 });
 
 //Register Form
