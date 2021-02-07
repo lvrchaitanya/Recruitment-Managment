@@ -1,0 +1,46 @@
+CREATE TABLE `student` (
+  `userName` varchar(20) DEFAULT NULL,
+  `sname` varchar(20) DEFAULT NULL,
+  `usn` varchar(10) NOT NULL,
+  `department` varchar(30) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `contactNo` varchar(10) DEFAULT NULL,
+  `cgpa` float(4,2) DEFAULT NULL,
+  `resume` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`usn`)
+)
+
+CREATE TABLE `company` (
+  `cName` varchar(20) DEFAULT NULL,
+  `cId` varchar(20) NOT NULL,
+  `cInfo` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `contactNo` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`cId`)
+)
+
+
+CREATE TABLE `offer` (
+  `offerID` int NOT NULL AUTO_INCREMENT,
+  `offerDisc` varchar(100) DEFAULT NULL,
+  `coCgpa` float(4,2) DEFAULT NULL,
+  `lastDate` date DEFAULT NULL,
+  `logo` varchar(1000) DEFAULT NULL,
+  `cId` varchar(20) DEFAULT NULL,
+  `role` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`offerID`),
+  KEY `cId` (`cId`),
+  CONSTRAINT `offer_ibfk_1` FOREIGN KEY (`cId`) REFERENCES `company` (`cId`)
+)
+
+
+CREATE TABLE `registration` (
+  `offerID` int NOT NULL,
+  `usn` varchar(10) NOT NULL,
+  `roundNo` int DEFAULT '0',
+  `status` varchar(45) DEFAULT 'Not Started',
+  PRIMARY KEY (`offerID`,`usn`),
+  KEY `usn` (`usn`),
+  CONSTRAINT `registration_ibfk_1` FOREIGN KEY (`usn`) REFERENCES `student` (`usn`),
+  CONSTRAINT `registration_ibfk_2` FOREIGN KEY (`offerID`) REFERENCES `offer` (`offerID`) ON DELETE CASCADE
+)

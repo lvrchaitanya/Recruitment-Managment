@@ -28,7 +28,7 @@ function seedDB(){
 	if(err){
 		console.log(err);
 	}else{
-		console.log("Movies Removed");console.log("===========================");
+		console.log("Company Offer Removed");console.log("===========================");
 		data.forEach((seed)=>{
 		Movie.create(seed,(err,pushedMovie)=>{
 			if(err){

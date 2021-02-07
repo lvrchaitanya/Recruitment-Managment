@@ -1,8 +1,8 @@
 <% include ../partials/header %>
 <div class="register">
 
-	<h1 class=" d-flex justify-content-center">
-		Add your Response
+	<h1 class=" d-flex justify-content-center" style="color: white;">
+		Edit your Response
 	</h1>
 	<div class=row>
 		<form action="/comments/response/<%=_id%>" class="mx-auto" method="POST">
@@ -12,8 +12,8 @@
 			<div class="form-group">
 				<input class="btn  form-control btn-primary" type="submit">
 			</div>
+			<a href="/movies">Go Back </a>
 		</form>
 	</div>
-	<a href="/movies">Go Back </a>
 </div>
 <% include ../partials/footer %>
